@@ -394,7 +394,7 @@ class Connection:
         try:
             user_form = await self._parse_form(html)
             # Expect first form to be HTML
-            if user_form.get('type', None) is 'html':
+            if user_form.get('type', None) == 'html':
                 user_form['email'] = self._session_auth_username
             else:
                 raise SkodaAuthenticationException('Expected HTML data for initial login form!')
@@ -1623,6 +1623,12 @@ class Connection:
 
             if data.get('schedule', {}).get('operationCharging', None) is not None:
                 profiles[timerid]['operationCharging']=data.get('schedule', {}).get('operationCharging',False)
+
+            if data.get('schedule', {}).get('nightRateStart', None) is not None:
+                profiles[timerid]['nightRateTimeStart']=data.get('schedule', {}).get('nightRateStart',False)
+
+            if data.get('schedule', {}).get('nightRateEnd', None) is not None:
+                profiles[timerid]['nightRateTimeEnd']=data.get('schedule', {}).get('nightRateEnd',False)
 
             # Construct basic settings
             settings = {
